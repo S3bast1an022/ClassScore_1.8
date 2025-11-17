@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<!--
+  ================================================================
+  ARCHIVO: panelDocente.html
+  DESCRIPCIÓN:
+    Panel principal del docente en el sistema ClassScore.
+    Permite gestionar notas de estudiantes, consultar cursos,
+    estudiantes, horarios, comunicados y el perfil del docente.
+    Incluye navegación por pestañas y secciones dinámicas.
+  ================================================================
+-->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">  <!-- Codificación UTF-8 para caracteres especiales -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- Responsive design -->
+  <title>Bienvenido — Class Score</title>
+  <!-- Estilos CSS del sistema -->
+  <link rel="stylesheet" href="../classScore/classscore.css">
+</head>
+<body class="panel-docente">
+
+  <!-- ===================== ENCABEZADO PRINCIPAL ===================== -->
+  <header>
+    <div class="header-left">
+      <!-- Contenedor del logo con fondo blanco para que resalte -->
+      <div class="logo-container-header">
+        <img src="./imagenes_de_pagina/logo-cs.png" alt="Logo Class Score" class="logo-img">
+      </div>
+      <!-- Título dinámico que se actualizará con el nombre del usuario -->
+      <h1 id="header-titulo">Bienvenido, Usuario</h1>
+    </div>
+
+    <!-- Botón para cerrar sesión -->
+    <button class="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
+  </header>
+
+
+  <!-- ===================== CONTENEDOR GENERAL ===================== -->
+  <div class="container"> <!-- Agrupa todo el contenido principal -->
+
+    <!-- ===================== NAVEGACIÓN POR PESTAÑAS ===================== -->
+    <!-- NOTA: Ninguna pestaña está activa por defecto para evitar que se muestre
+         automáticamente ninguna sección al cargar la página. -->
+    <!-- Mapa de navegación (solo indicador visual, no clickeable) -->
+    <!-- Muestra en qué sección se encuentra el usuario actualmente -->
+    <div class="nav-tabs" id="nav-tabs-indicador">
+      <div class="tab-indicador" data-seccion="editar">Editar Notas</div>
+      <div class="tab-indicador" data-seccion="estudiantes">Estudiantes</div>
+      <div class="tab-indicador" data-seccion="cursos">Cursos</div>
+      <div class="tab-indicador" data-seccion="horario">Horario</div>
+      <div class="tab-indicador" data-seccion="comunicados">Comunicados</div>
+      <div class="tab-indicador" data-seccion="perfil">Perfil</div>
+    </div>
+
+    <!-- ===================== BLOQUE DE TARJETAS (PANEL INICIAL) ===================== -->
+
+    <div class="cards"> <!-- Contenedor que muestra las tarjetas de opciones -->
+      
+      <!-- TARJETA 1: EDITAR NOTAS -->
+      <div class="card">
+        <h2>Editar Notas</h2>
+        <p>Actualiza calificaciones por curso y estudiante.</p>
+        <!-- Al hacer clic se muestra la sección 'editar' y carga datos necesarios -->
+        <a href="#" class="btn" onclick="mostrarSeccion('editar'); cargarDatosEditar();">Ir</a>
+      </div>
+
+      <!-- TARJETA 2: VISUALIZAR ESTUDIANTES -->
+      <div class="card">
+        <h2>Estudiantes</h2>
+        <p>Consulta el listado y su estado académico.</p>
+        <a href="#" class="btn" onclick="mostrarSeccion('estudiantes'); cargarEstudiantes();">Ir</a>
+      </div>
+
+      <!-- TARJETA 3: VISUALIZAR CURSOS -->
+      <div class="card">
+        <h2>Cursos</h2>
+        <p>Revisa los cursos a cargo y detalles.</p>
+        <a href="#" class="btn" onclick="mostrarSeccion('cursos'); cargarCursosDocente();">Ir</a>
+      </div>
+
+      <!-- TARJETA 5: HORARIO -->
+      <div class="card">
+        <h2>Horario</h2>
+        <p>Consulta tu horario de clases.</p>
+        <a href="#" class="btn" onclick="mostrarSeccion('horario'); cargarHorarioDocente();">Ir</a>
+      </div>
+
+      <!-- TARJETA 6: COMUNICADOS -->
+      <div class="card">
+        <h2>Comunicados</h2>
+        <p>Publica y gestiona comunicados.</p>
+        <a href="#" class="btn" onclick="mostrarSeccion('comunicados'); cargarComunicadosDocente();">Ir</a>
+      </div>
+
+      <!-- TARJETA 4: PERFIL -->
+      <div class="card">
+        <h2>Perfil</h2>
+        <p>Modifica tu información y preferencias.</p>
+        <a href="#" class="btn" onclick="mostrarSeccion('perfil'); cargarPerfilDocente();">Ir</a>
+      </div>
+    </div> <!-- Fin del bloque de tarjetas -->
+
+    <!-- ===================== SECCIÓN 1: EDITAR NOTAS ===================== -->
+    <section id="editar" class="seccion oculto">
+      <h2>Gestión de Notas</h2>
+      
+      <div id="mensaje-notas" class="alert" style="display:none;"></div>
+
+      <!-- Filtros para seleccionar curso y periodo -->
+      <div class="form-container" style="margin-bottom:20px;">
+        <label for="filtro-curso-notas">Curso:</label>
+        <select id="filtro-curso-notas" onchange="cargarEstudiantesYActividades()">
+          <option value="">Seleccione un curso...</option>
+          <!-- Opciones cargadas dinámicamente -->
+        </select>
+
+        <label for="filtro-periodo-notas">Periodo académico:</label>
+        <select id="filtro-periodo-notas" onchange="cargarEstudiantesYActividades()">
+          <option value="">Seleccione un periodo...</option>
+          <!-- Opciones cargadas dinámicamente -->
+        </select>
+      </div>
+
+      <!-- Tabla dinámica de notas -->
+      <div id="contenedor-tabla-notas" class="tabla-container" style="display:none;">
+        <div style="overflow-x:auto;">
+          <table id="tabla-notas-docente" style="width:100%;">
+            <thead id="thead-notas">
+              <tr>
+                <th>Estudiante</th>
+                <!-- Columnas dinámicas: Actividades con sus porcentajes -->
+              </tr>
+            </thead>
+            <tbody id="tbody-notas">
+              <!-- Filas dinámicas con estudiantes y sus notas -->
+            </tbody>
+          </table>
+        </div>
+        
+        <div style="margin-top:20px; display:flex; gap:10px;">
+          <button type="button" class="user-btn" onclick="abrirModalCrearActividad()">Agregar actividad</button>
+          <button type="button" class="user-btn secondary" id="btn-editar-notas" onclick="toggleEditarNotas()">Editar notas</button>
+          <button type="button" class="user-btn" id="btn-guardar-notas" onclick="guardarNotas()" style="display:none;">Guardar notas</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal para crear nueva actividad -->
+    <div id="modal-actividad" class="modal oculto">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Crear actividad</h3>
+          <span class="modal-close" onclick="cerrarModalActividad()">&times;</span>
+        </div>
+        <div class="modal-body">
+          <form id="form-actividad" class="form-perfil">
+            <label for="nombre-actividad">Nombre de la actividad:</label>
+            <input type="text" id="nombre-actividad" name="nombre_actividad" placeholder="Ej: Parcial 1, Taller de funciones" required>
+
+            <label for="porcentaje-actividad">Porcentaje (0-100):</label>
+            <input type="number" id="porcentaje-actividad" name="porcentaje" min="0" max="100" step="0.01" placeholder="Ej: 25.5" required oninput="actualizarPorcentajeDisponible()">
+            <small id="porcentaje-disponible" style="color:#666; display:block; margin-top:5px;"></small>
+
+            <button type="button" class="user-btn" onclick="crearActividad()">Crear actividad</button>
+            <button type="button" class="user-btn secondary" onclick="cerrarModalActividad()">Cancelar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== SECCIÓN 2: VISUALIZAR ESTUDIANTES ===================== -->
+    <section id="estudiantes" class="seccion oculto">
+      <h2>Estudiantes</h2>
+      <p class="helper">Consulta y gestiona los estudiantes asignados a tus cursos.</p>
+      
+      <div class="form-container" style="margin-bottom:20px;">
+        <label for="filtro-curso-estudiantes">Curso:</label>
+        <select id="filtro-curso-estudiantes" onchange="cargarEstudiantesCompleto()">
+          <option value="">Seleccione un curso...</option>
+          <!-- Opciones cargadas dinámicamente -->
+        </select>
+
+        <label for="filtro-periodo-estudiantes">Periodo académico:</label>
+        <select id="filtro-periodo-estudiantes" onchange="cargarEstudiantesCompleto()">
+          <option value="">Seleccione un periodo...</option>
+          <!-- Opciones cargadas dinámicamente -->
+        </select>
+      </div>
+
+      <div id="contenedor-tabla-estudiantes" class="tabla-container" style="display:none;">
+        <div style="overflow-x:auto;">
+          <table id="tabla-estudiantes" style="width:100%;">
+            <thead id="thead-estudiantes">
+              <tr>
+                <th>Nombre</th>
+                <!-- Columnas dinámicas: Actividades, Nota Final, Estado -->
+              </tr>
+            </thead>
+            <tbody id="tbody-estudiantes">
+              <!-- Filas dinámicas con estudiantes y sus notas -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECCIÓN 3: VISUALIZAR CURSOS ===================== -->
+    <section id="cursos" class="seccion oculto">
+      <h2>Cursos a cargo</h2>
+      <p class="helper">Lista de cursos asignados y detalles rápidos.</p>
+
+      <!-- Filtro por período -->
+      <div class="form-container" style="margin-bottom:20px;">
+        <label for="filtro-periodo-cursos">Seleccione un período académico:</label>
+        <select id="filtro-periodo-cursos" onchange="cargarCursosDocente()">
+          <option value="">Seleccione un período...</option>
+          <!-- Opciones cargadas dinámicamente -->
+        </select>
+      </div>
+
+      <div class="tabla-container">
+        <table id="tabla-cursos-docente">
+          <thead>
+            <tr>
+              <th>Nombre del curso</th>
+              <th>Descripción</th>
+              <th>Número de estudiantes</th>
+              <th>Promedio</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Filas cargadas dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== SECCIÓN 5: HORARIO ===================== -->
+    <section id="horario" class="seccion oculto">
+      <h2>Mi Horario</h2>
+      <p class="helper">Horario de clases asignadas.</p>
+
+      <div class="tabla-container">
+        <table id="tabla-horario-docente">
+          <thead>
+            <tr>
+              <th>Día</th>
+              <th>Hora inicio</th>
+              <th>Hora fin</th>
+              <th>Curso</th>
+              <th>Salón</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Filas cargadas dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================== SECCIÓN 6: COMUNICADOS ===================== -->
+    <section id="comunicados" class="seccion oculto">
+      <h2>Gestión de Comunicados</h2>
+      <p class="helper">Publica y gestiona comunicados para estudiantes.</p>
+
+      <div style="margin-bottom:20px;">
+        <button type="button" class="user-btn" onclick="abrirModalCrearComunicadoDocente()">
+          + Publicar nuevo comunicado
+        </button>
+      </div>
+
+      <div id="mensaje-comunicados-docente" class="alert" style="display:none;"></div>
+
+      <div class="tabla-container">
+        <table id="tabla-comunicados-docente">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Título</th>
+              <th>Contenido</th>
+              <th>Autor</th>
+              <th>Cargo</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-comunicados-docente">
+            <!-- Filas cargadas dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Modal para crear comunicado (docente) -->
+    <div id="modal-crear-comunicado-docente" class="modal oculto">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Publicar nuevo comunicado</h3>
+          <span class="modal-close" onclick="cerrarModalCrearComunicadoDocente()">&times;</span>
+        </div>
+        <div class="modal-body">
+          <form id="form-comunicado-docente" class="form-perfil">
+            <label for="comunicado-titulo-docente">Título:</label>
+            <input type="text" id="comunicado-titulo-docente" placeholder="Título del comunicado" required>
+
+            <label for="comunicado-contenido-docente">Contenido:</label>
+            <textarea id="comunicado-contenido-docente" rows="5" placeholder="Contenido del comunicado" required></textarea>
+
+            <button type="button" class="user-btn" onclick="guardarComunicadoDocente()">Publicar comunicado</button>
+            <button type="button" class="user-btn secondary" onclick="cerrarModalCrearComunicadoDocente()">Cancelar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== SECCIÓN 4: PERFIL DEL DOCENTE ===================== -->
+    <section id="perfil" class="seccion oculto">
+      <h2>Perfil del Docente</h2>
+      
+      <!-- Contenedor principal del perfil -->
+      <div id="contenedor-perfil" class="perfil-container">
+        
+        <!-- Sección de foto de perfil -->
+        <div class="perfil-foto-container">
+          <div class="foto-wrapper">
+            <img id="foto-perfil-docente" src="./imagenes_de_pagina/sin_foto_perfil.jpeg" alt="Foto de perfil" class="foto-perfil">
+            <div class="foto-overlay">
+              <button type="button" class="btn-cambiar-foto" onclick="abrirModalFotoDocente()">Modificar foto de perfil</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sección de información personal -->
+        <div class="perfil-info-container">
+          <div class="perfil-header">
+            <h3>Información personal</h3>
+            <button type="button" class="user-btn" id="btn-editar-perfil-docente" onclick="toggleEditarPerfilDocente()">Editar</button>
+          </div>
+
+          <div id="mensaje-perfil-docente" class="alert" style="display:none;"></div>
+
+          <form id="form-perfil-docente" class="form-perfil">
+            <label for="perfil-nombre-docente">Nombre completo:</label>
+            <input type="text" id="perfil-nombre-docente" name="nombre" readonly>
+
+            <label for="perfil-correo-docente">Correo electrónico:</label>
+            <input type="email" id="perfil-correo-docente" name="correo" readonly>
+
+            <label for="perfil-telefono-docente">Teléfono:</label>
+            <input type="text" id="perfil-telefono-docente" name="telefono" placeholder="Ej: +57 311 555 1234" readonly>
+
+            <label for="perfil-tipo-documento-docente">Tipo de documento:</label>
+            <select id="perfil-tipo-documento-docente" name="tipo_documento" disabled>
+              <option value="">Seleccione...</option>
+              <option value="Cédula">Cédula</option>
+              <option value="Tarjeta de identidad">Tarjeta de identidad</option>
+              <option value="Pasaporte">Pasaporte</option>
+              <option value="NIT">NIT</option>
+              <option value="Cédula de extranjería">Cédula de extranjería</option>
+            </select>
+
+            <label for="perfil-numero-documento-docente">Número de documento:</label>
+            <input type="text" id="perfil-numero-documento-docente" name="numero_documento" pattern="[0-9]+" placeholder="Solo números" readonly>
+
+            <button type="button" class="user-btn" id="btn-actualizar-perfil-docente" onclick="actualizarPerfilDocente()" style="display:none; margin-top:15px;">Actualizar perfil</button>
+          </form>
+        </div>
+
+        <!-- Sección de cambio de contraseña -->
+        <div class="perfil-password-container">
+          <h3>Actualizar contraseña</h3>
+          <div id="mensaje-password-docente" class="alert" style="display:none;"></div>
+
+          <form id="form-password-docente" class="form-perfil">
+            <label for="password-actual-docente">Contraseña actual:</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="password-actual-docente" name="password_actual" placeholder="Ingrese su contraseña actual">
+              <button type="button" class="toggle-password" onclick="togglePasswordDocente('password-actual-docente')" aria-label="Mostrar contraseña">◉</button>
+            </div>
+
+            <label for="password-nueva-docente">Nueva contraseña:</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="password-nueva-docente" name="password_nueva" placeholder="Mínimo 6 caracteres" minlength="6">
+              <button type="button" class="toggle-password" onclick="togglePasswordDocente('password-nueva-docente')" aria-label="Mostrar contraseña">◉</button>
+            </div>
+
+            <label for="password-confirmar-docente">Confirmar nueva contraseña:</label>
+            <div class="password-input-wrapper">
+              <input type="password" id="password-confirmar-docente" name="password_confirmar" placeholder="Confirme la nueva contraseña" minlength="6">
+              <button type="button" class="toggle-password" onclick="togglePasswordDocente('password-confirmar-docente')" aria-label="Mostrar contraseña">◉</button>
+            </div>
+
+            <button type="button" class="user-btn" onclick="actualizarPasswordDocente()" style="margin-top:15px;">Actualizar contraseña</button>
+          </form>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Modal para subir foto de perfil (docente) -->
+    <div id="modal-foto-docente" class="modal oculto">
+      <div class="modal-content">
+        <span class="modal-close" onclick="cerrarModalFotoDocente()">&times;</span>
+        <h3>Cambiar foto de perfil</h3>
+        <form id="form-foto-docente" enctype="multipart/form-data">
+          <input type="file" id="input-foto-docente" name="foto" accept="image/jpeg,image/jpg,image/png" required>
+          <div id="preview-foto-docente" style="margin:15px 0; text-align:center;">
+            <img id="img-preview-docente" src="" alt="Vista previa" style="max-width:200px; max-height:200px; display:none; border-radius:8px;">
+          </div>
+          <button type="button" class="user-btn" onclick="subirFotoPerfilDocente()">Subir foto</button>
+          <button type="button" class="user-btn secondary" onclick="cerrarModalFotoDocente()">Cancelar</button>
+        </form>
+      </div>
+    </div>
+
+  </div> <!-- Fin del contenedor general -->
+
+  <script src="docente.js"></script>
+</body>
+</html>

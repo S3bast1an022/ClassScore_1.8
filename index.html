@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--
+  ================================================================
+  ARCHIVO: index.html
+  DESCRIPCIÓN:
+    Página de inicio de sesión del sistema ClassScore.
+    Permite a los usuarios (administradores, docentes, estudiantes)
+    autenticarse en el sistema. Valida las credenciales y redirige
+    al panel correspondiente según el rol del usuario.
+  ================================================================
+-->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">  <!-- Codificación de caracteres UTF-8 para soportar tildes y caracteres especiales -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <!-- Configuración responsive para móviles -->
+  <title>Inicio de Sesión | Sistema Académico</title>
+  <!-- Estilos CSS del sistema -->
+  <link rel="stylesheet" href="../classScore/classscore.css">
+</head>
+<body>
+
+  <!-- Contenedor principal centrado vertical y horizontalmente -->
+  <main class="login-container">
+    <!-- Caja del formulario de login con fondo blanco y sombra -->
+    <section class="login-box" role="form" aria-label="Formulario de inicio de sesión">
+      
+      <!-- Sección de marca/logo -->
+      <div class="brand">
+        <!-- Contenedor del logo del sistema -->
+        <div class="logo-container">
+          <img src="./imagenes_de_pagina/logo-cs.png" alt="Logo del sistema" class="system-logo">
+        </div>
+        <!-- Título del sistema -->
+        <h1>ClassScore</h1>
+      </div>
+
+      <!-- Formulario de inicio de sesión -->
+      <!-- method="POST": Envía los datos de forma segura -->
+      <!-- action="login.php": Procesa el login en el servidor -->
+      <form id="loginForm" method="POST" action="login.php">
+        
+        <!-- Campo de correo electrónico -->
+        <div class="form-group">
+          <label for="correo">Correo</label>
+          <input type="email" id="correo" name="correo" aria-label="Campo de usuario" required>
+        </div>
+
+        <!-- Campo de contraseña con botón para mostrar/ocultar -->
+        <div class="form-group">
+          <label for="contrasena">Contraseña</label>
+          <div class="password-input-wrapper">
+            <input type="password" id="contrasena" name="contrasena" aria-label="Campo de contraseña" required>
+            <!-- Botón para mostrar/ocultar la contraseña (solo iconos) -->
+            <button type="button" class="toggle-password" onclick="togglePasswordLogin('contrasena')" aria-label="Mostrar/ocultar contraseña">◉</button>
+          </div>
+        </div>
+
+        <!-- Botón de envío del formulario -->
+        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+      </form>
+
+      <!-- Información del sistema -->
+      <p class="system-info">Versión 1.0 | © 2025 Sistema Académico</p>
+      
+      <!-- Contenedor para mensajes de error (se muestra dinámicamente con JavaScript) -->
+      <div id="alerta" class="alert" role="alert" aria-live="assertive"></div>
+    </section>
+  </main>
+
+  <!-- Script JavaScript para validación del formulario y funciones de login -->
+  <script src="login.js"></script>
+</body>
+</html>

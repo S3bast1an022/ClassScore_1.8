@@ -1,0 +1,2107 @@
+/* ================================================================
+   ARCHIVO: classscore.css
+   DESCRIPCIÓN:
+     Archivo CSS unificado para el sistema ClassScore.
+     Contiene todos los estilos para login, panel admin, panel docente
+     y panel estudiante. Usa variables CSS, Flexbox y media queries
+     para un diseño responsive y mantenible.
+   ================================================================ */
+
+/* ==================== VARIABLES GLOBALES ==================== */
+/* 
+   Variables CSS que definen la paleta de colores y estilos base.
+   Se pueden sobrescribir según el panel (admin, docente, estudiante).
+   
+   PALETA DE COLORES BASE:
+   - Azul oscuro: Encabezados, botones principales
+   - Fondo claro: Fondos principales del sitio
+   - Vinotinto: Acentos sutiles en hover y bordes
+   - Bordes claros: Líneas divisorias sutiles
+*/
+:root {
+  --azul-oscuro: #1b263b;      /* Azul oscuro principal (encabezados, títulos) */
+  --azul-claro: #274c77;       /* Azul oscuro secundario (botones principales) */
+  --azul-muy-oscuro: #0d1b2a;  /* Azul muy oscuro (texto principal) */
+  --vinotinto: #722f37;        /* Vinotinto suave para acentos y hover */
+  --fondo: #f8f9fc;            /* Fondo general claro y moderno */
+  --texto: #0d1b2a;            /* Color del texto principal */
+  --blanco: #FFFFFF;           /* Color blanco base para contenedores */
+  --gris: #f8f9fc;             /* Fondo general del sitio (gris muy claro) */
+  --gris-texto: #4B5563;       /* Color del texto gris */
+  --borde: #d1d5db;            /* Color para bordes y líneas sutiles */
+  --verde: #10B981;            /* Verde para estados "ok" */
+  --sombra: 0 4px 20px rgba(0,0,0,0.1);  /* Sombra suave y moderna */
+  --radius: 12px;              /* Radio de borde general (esquinas redondeadas) */
+  --fuente: 'Poppins', system-ui, sans-serif;  /* Fuente principal */
+  
+  /* Variables de compatibilidad */
+  --azul: var(--azul-oscuro);
+  
+  /* Colores por defecto (admin - blanco) */
+  --color-primario: var(--blanco);
+  --color-secundario: var(--blanco);
+  --color-acento: var(--vinotinto);
+}
+
+/* ==================== COLORES PARA PANEL DE ESTUDIANTE ==================== */
+body.panel-estudiante {
+  --color-primario: #042A2B;      /* Verde oscuro - Color principal del banner superior */
+  --color-secundario: #ff9800;     /* Naranja - Color secundario para botones */
+  --color-acento: #ff9800;        /* Naranja para acentos y botones */
+  --color-hover: #e68900;         /* Naranja más oscuro para hover */
+  --color-rgba-light: rgba(255, 152, 0, 0.2);   /* Naranja con opacidad 0.2 */
+  --color-rgba-medium: rgba(255, 152, 0, 0.3);  /* Naranja con opacidad 0.3 */
+  --color-rgba-hover: rgba(255, 152, 0, 0.08);  /* Naranja con opacidad 0.08 */
+  --color-rgba-hover-strong: rgba(255, 152, 0, 0.12); /* Naranja con opacidad 0.12 */
+  --color-rgba-bg: rgba(255, 152, 0, 0.05);      /* Naranja con opacidad 0.05 */
+  --color-rgba-primario: rgba(4, 42, 43, 0.2); /* Verde oscuro con opacidad 0.2 */
+  /* Sobrescribir variables globales: principal = verde oscuro, secundario = naranja */
+  --azul: var(--color-primario);              /* Verde oscuro #042A2B (texto, botones principales, header) */
+  --azul-oscuro: var(--color-primario);       /* Verde oscuro #042A2B (texto, encabezados) */
+  --azul-claro: var(--color-secundario);       /* Naranja #ff9800 (acentos, hover, bordes) */
+  --azul-muy-oscuro: #021A1B;                 /* Verde más oscuro */
+}
+
+/* ==================== COLORES PARA PANEL DE DOCENTE ==================== */
+body.panel-docente {
+  --color-primario: #D00000;      /* Rojo - Color principal del banner superior */
+  --color-secundario: #FFBA08;     /* Amarillo - Color secundario */
+  --color-acento: #FFBA08;        /* Amarillo para acentos */
+  --color-hover: #E6A507;         /* Amarillo más oscuro para hover */
+  --color-rgba-light: rgba(255, 186, 8, 0.2);    /* Amarillo con opacidad 0.2 */
+  --color-rgba-medium: rgba(255, 186, 8, 0.3);   /* Amarillo con opacidad 0.3 */
+  --color-rgba-hover: rgba(255, 186, 8, 0.08);   /* Amarillo con opacidad 0.08 */
+  --color-rgba-hover-strong: rgba(255, 186, 8, 0.12); /* Amarillo con opacidad 0.12 */
+  --color-rgba-bg: rgba(255, 186, 8, 0.05);      /* Amarillo con opacidad 0.05 */
+  --color-rgba-primario: rgba(208, 0, 0, 0.2); /* Rojo con opacidad 0.2 */
+  /* Sobrescribir variables globales: principal = rojo, secundario = amarillo */
+  --azul: var(--color-primario);              /* Rojo #D00000 (texto, botones principales, header) */
+  --azul-oscuro: var(--color-primario);       /* Rojo #D00000 (texto, encabezados) */
+  --azul-claro: var(--color-secundario);     /* Amarillo #FFBA08 (acentos, hover, bordes) */
+  --azul-muy-oscuro: #B30000;                 /* Rojo más oscuro */
+}
+
+/* ==================== COLORES PARA PANEL DE ADMINISTRADOR ==================== */
+body.panel-admin {
+  --color-primario: var(--blanco);
+  --color-secundario: var(--blanco);
+  --color-acento: var(--vinotinto);
+  --color-hover: #5a252a;
+  --color-texto-principal: var(--azul-oscuro);
+  --color-texto-secundario: var(--azul-claro);
+  --color-borde: var(--vinotinto);
+  --color-rgba-light: rgba(114, 47, 55, 0.2);     /* Vinotinto con opacidad 0.2 */
+  --color-rgba-medium: rgba(114, 47, 55, 0.3);    /* Vinotinto con opacidad 0.3 */
+  --color-rgba-hover: rgba(114, 47, 55, 0.08);    /* Vinotinto con opacidad 0.08 */
+  --color-rgba-hover-strong: rgba(114, 47, 55, 0.12); /* Vinotinto con opacidad 0.12 */
+  --color-rgba-bg: rgba(114, 47, 55, 0.05);       /* Vinotinto con opacidad 0.05 */
+  --color-rgba-secundario: rgba(27, 38, 59, 0.2); /* Azul oscuro con opacidad 0.2 */
+  /* Mantener variables originales de azul */
+}
+
+/* ==================== RESETEO Y ESTILOS BASE ==================== */
+/* 
+   Estilos base que se aplican a todos los elementos.
+   Resetea márgenes, padding y establece configuraciones globales.
+*/
+
+/* Reset general: elimina márgenes y padding predeterminados */
+* {
+  box-sizing: border-box;  /* Padding y border incluidos en el ancho/alto */
+  margin: 0;               /* Sin márgenes predeterminados */
+  padding: 0;              /* Sin rellenos predeterminados */
+}
+
+/* Estilos base para html y body */
+html, body {
+  height: 100%;            /* Altura completa de la pantalla */
+  font-family: var(--fuente);  /* Fuente principal del sistema */
+  background-color: var(--fondo);  /* Fondo claro (#f8f9fc) */
+  color: var(--texto);     /* Color base del texto */
+}
+
+h1{
+  color: var(--blanco);
+}
+
+
+h2, h3 {
+  color: var(--color-acento); /* Titulares con color vinotinto */
+  font-weight: 600;          /* Peso de fuente medio para mejor legibilidad */
+  margin-bottom: 15px;       /* Espaciado inferior consistente */
+}
+
+/* ==================== TIPOGRAFÍA ==================== */
+/* 
+   Estilos para textos y títulos.
+   Mejora la legibilidad y el espaciado del contenido.
+*/
+
+/* Estilo para párrafos: padding vertical para mejor espaciado */
+p {
+  padding: 8px 0;            /* Padding vertical para evitar que se vea amontonado */
+  line-height: 1.6;          /* Interlineado mejorado para legibilidad */
+}
+
+h3 {
+  color: var(--color-acento);
+  border-bottom: 1px solid var(--color-rgba-light); /* Línea inferior según panel */
+  padding-bottom: 8px;
+}
+
+/* ---------------------------------------------------------------
+   DIVISORES DE SECCIÓN (section-divider)
+   DESCRIPCIÓN:
+     Líneas divisorias sutiles con color vinotinto para separar
+     secciones de manera elegante.
+   --------------------------------------------------------------- */
+.section-divider {
+  border-bottom: 2px solid var(--color-acento); /* Línea divisoria según panel */
+  margin: 20px 0;          /* Espaciado vertical */
+  opacity: 0.6;            /* Opacidad sutil para no sobrecargar */
+}
+
+hr {
+  border: none;            /* Elimina borde predeterminado */
+  border-top: 2px solid var(--color-acento); /* Línea superior según panel */
+  margin: 25px 0;          /* Espaciado vertical generoso */
+  opacity: 0.5;            /* Opacidad sutil */
+}
+
+a {
+  text-decoration: none;   /* Elimina subrayado */
+  color: var(--azul);      /* Enlaces en color azul */
+}
+
+/* ====================== NUEVO: LOGO DEL SISTEMA ====================== */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.8rem; /* Espacio entre el logo y el nombre */
+}
+
+.system-logo {
+  width: 100px;      /* 🔹 Tamaño fijo del logo */
+  height: 100px;     /* 🔹 Tamaño fijo del logo */
+  object-fit: contain; /* Mantiene proporción sin recortar */
+  border-radius: 12px; /* Bordes ligeramente redondeados */
+  box-shadow: var(--sombra);
+}
+
+/* Versión adaptativa para móviles */
+@media (max-width: 480px) {
+  .system-logo {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+
+/* ==================== ESTILOS DE BOTONES ==================== */
+/* 
+   Estilos para botones del sistema. Incluye botones principales,
+   secundarios y efectos hover. Los colores se adaptan según el panel.
+*/
+
+/* Estilos base para todos los botones */
+button, .btn {
+  appearance: none;           /* Elimina estilos predeterminados del navegador */
+  border: none;               /* Sin bordes */
+  cursor: pointer;            /* Cursor tipo "mano" */
+  font-family: inherit;       /* Hereda la fuente del body */
+  font-weight: 600;           /* Negrita media */
+  border-radius: var(--radius);  /* Bordes redondeados (12px) */
+  padding: 10px 16px;         /* Espaciado interno */
+  transition: 0.25s ease;     /* Transición suave al pasar el mouse */
+}
+
+/* Botón principal: color de acento según el panel */
+.btn {
+  background-color: var(--color-acento);  /* Fondo según panel (naranja para estudiante, etc.) */
+  color: var(--blanco);                    /* Texto blanco */
+  border-radius: 6px;                      /* Bordes redondeados */
+  box-shadow: 0 2px 8px var(--color-rgba-medium);  /* Sombra sutil */
+  transition: all 0.3s ease;               /* Transición suave */
+  border: none;                            /* Sin borde */
+  padding: 10px 16px;                      /* Espaciado interno */
+  font-weight: 600;                        /* Peso de fuente medio */
+  cursor: pointer;                         /* Cursor tipo "mano" */
+}
+
+/* Efecto hover del botón principal */
+.btn:hover {
+  background-color: var(--color-hover);    /* Color más oscuro al hover */
+  transform: translateY(-2px);             /* Efecto de "levantar" el botón */
+  box-shadow: 0 6px 24px var(--color-rgba-medium);  /* Sombra más pronunciada */
+}
+
+/* Botón secundario: fondo blanco con borde de color */
+.btn.secondary {
+  background: var(--blanco);               /* Fondo blanco */
+  color: var(--color-acento);              /* Texto del color de acento */
+  border: 1px solid var(--color-acento);   /* Borde del color de acento */
+  box-shadow: none;                        /* Sin sombra */
+}
+
+/* Efecto hover del botón secundario */
+.btn.secondary:hover {
+  border-color: var(--color-hover);        /* Borde más oscuro al hover */
+  color: var(--color-hover);               /* Texto más oscuro */
+  background: var(--color-rgba-bg);        /* Fondo muy claro del color de acento */
+}
+
+/* ==================== CONTENEDORES PRINCIPALES ==================== */
+/* 
+   Contenedores que organizan el contenido principal de cada panel.
+   Usan Flexbox para un layout flexible y responsive.
+*/
+
+/* Contenedor principal: centra el contenido y limita el ancho máximo */
+.container {
+  max-width: 1500px;        /* Ancho máximo del contenido */
+  margin: 24px auto;        /* Centrado horizontal con márgenes */
+  padding: 0 16px;          /* Relleno lateral */
+  display: flex;            /* Activa Flexbox */
+  flex-direction: column;   /* Organiza los hijos en columna (vertical) */
+  gap: 20px;                /* Espacio entre elementos hijos */
+}
+
+/* Panel: contenedor con fondo blanco, borde y sombra */
+.panel {
+  background: var(--blanco);      /* Fondo blanco */
+  border: 1px solid var(--borde); /* Borde sutil */
+  border-radius: var(--radius);   /* Bordes redondeados (12px) */
+  padding: 18px;                  /* Espaciado interno */
+  box-shadow: var(--sombra);      /* Sombra suave */
+}
+
+/* Contenedor de formularios */
+.form-container {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-left: 4px solid var(--color-acento); /* Borde izquierdo según panel */
+  border-radius: var(--radius);
+  padding: 25px;
+  box-shadow: var(--sombra);
+  margin-bottom: 20px;
+}
+
+.form-container h3 {
+  color: var(--color-acento);
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--color-rgba-light);
+  padding-bottom: 10px;
+}
+
+/* Estilos para labels en form-container - padding amplio antes de selects/inputs */
+/* ==================== FORMULARIOS ==================== */
+/* 
+   Estilos para formularios, inputs, labels y selects.
+   Mejora la usabilidad y el espaciado entre elementos.
+*/
+
+/* Labels de formularios: espaciado amplio para separación */
+.form-container label {
+  display: block;             /* Cada label ocupa su propia línea */
+  margin-bottom: 15px;        /* Espacio amplio antes del select/input */
+  padding-top: 12px;          /* Padding superior para separación */
+  font-weight: 600;           /* Negrita para mejor visibilidad */
+  color: var(--texto);        /* Color del texto */
+  font-size: 0.95rem;         /* Tamaño de fuente */
+}
+
+/* Estilos para elementos comunes que estaban inline */
+/* ==================== CLASES UTILITARIAS ==================== */
+/* 
+   Clases reutilizables para reducir duplicación de código CSS.
+   Facilitan el mantenimiento y la consistencia del diseño.
+*/
+
+/* ---------------------------------------------------------------
+   MÁRGENES (margin utilities)
+   DESCRIPCIÓN:
+     Clases para aplicar márgenes de forma consistente.
+   --------------------------------------------------------------- */
+.margin-bottom {
+  margin-bottom: 20px;
+}
+
+.margin-bottom-sm {
+  margin-bottom: 10px;
+}
+
+.margin-bottom-lg {
+  margin-bottom: 30px;
+}
+
+.margin-top {
+  margin-top: 20px;
+}
+
+.margin-top-sm {
+  margin-top: 10px;
+}
+
+.margin-top-lg {
+  margin-top: 30px;
+}
+
+.margin-left {
+  margin-left: 15px;
+}
+
+.margin-right {
+  margin-right: 15px;
+}
+
+/* ---------------------------------------------------------------
+   PADDING (padding utilities)
+   DESCRIPCIÓN:
+     Clases para aplicar padding de forma consistente.
+   --------------------------------------------------------------- */
+.padding {
+  padding: 20px;
+}
+
+.padding-sm {
+  padding: 10px;
+}
+
+.padding-lg {
+  padding: 30px;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+/* ---------------------------------------------------------------
+   ESPACIADO VERTICAL (vertical spacing)
+   DESCRIPCIÓN:
+     Clases para espaciado vertical entre elementos.
+   --------------------------------------------------------------- */
+.spacing-vertical {
+  padding: 15px 0;
+}
+
+.spacing-vertical-sm {
+  padding: 8px 0;
+}
+
+.spacing-vertical-lg {
+  padding: 25px 0;
+}
+
+/* ---------------------------------------------------------------
+   CONTENEDORES (container utilities)
+   DESCRIPCIÓN:
+     Clases reutilizables para contenedores comunes.
+   --------------------------------------------------------------- */
+.form-container.margin-bottom {
+  margin-bottom: 20px;
+}
+
+.panel.margin-top {
+  margin-top: 20px;
+}
+
+.panel.no-padding {
+  padding: 0;
+}
+
+.preview-foto {
+  margin: 15px 0;
+  text-align: center;
+}
+
+.img-preview {
+  max-width: 200px;
+  max-height: 200px;
+  display: none;
+  border-radius: 8px;
+}
+
+/* ---------------------------------------------------------------
+   CONTENEDOR BASE (base-container)
+   DESCRIPCIÓN:
+     Clase base reutilizable para contenedores con fondo blanco,
+     borde, sombra y bordes redondeados. Reduce duplicación de código.
+   --------------------------------------------------------------- */
+.base-container {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radius);
+  box-shadow: var(--sombra);
+}
+
+/* Variante con borde izquierdo de acento */
+.base-container-accent {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-left: 4px solid var(--color-acento);
+  border-radius: var(--radius);
+  box-shadow: var(--sombra);
+}
+
+/* Variante con borde izquierdo más grueso */
+.base-container-accent-lg {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-left: 5px solid var(--color-acento);
+  border-radius: var(--radius);
+  box-shadow: var(--sombra);
+}
+
+/* ---------------------------------------------------------------
+   TEXTO (text utilities)
+   DESCRIPCIÓN:
+     Clases para estilos de texto comunes.
+   --------------------------------------------------------------- */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-bold {
+  font-weight: 600;
+}
+
+.text-muted {
+  color: var(--gris-texto);
+  opacity: 0.8;
+}
+
+/* ---------------------------------------------------------------
+   FLEXBOX (flexbox utilities)
+   DESCRIPCIÓN:
+     Clases para layouts flexibles comunes.
+   --------------------------------------------------------------- */
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+
+.flex-gap {
+  gap: 15px;
+}
+
+.flex-gap-sm {
+  gap: 10px;
+}
+
+.flex-gap-lg {
+  gap: 20px;
+}
+
+/* ---------------------------------------------------------------
+   CHECKBOX DESHABILITADO (disabled checkbox)
+   DESCRIPCIÓN:
+     Estilo para checkboxes deshabilitados, como el del
+     administrador principal que no se puede eliminar.
+   --------------------------------------------------------------- */
+.chk-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Contenedor de tablas */
+.tabla-container {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-left: 3px solid var(--color-acento); /* Borde izquierdo según panel */
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--sombra);
+  margin-bottom: 20px;
+  overflow-x: auto; /* Scroll horizontal en tablas grandes */
+  -webkit-overflow-scrolling: touch; /* Scroll suave en iOS */
+}
+
+.tabla-container h3 {
+  color: var(--color-acento);
+  margin-bottom: 15px;
+  border-bottom: 2px solid var(--color-rgba-light);
+  padding-bottom: 8px;
+}
+
+/*=======================================ESTILO DEL LOGIN ===================================*/
+
+.login-container {
+  display: flex;                /* Centra con flexbox */
+  justify-content: center;      /* Centrado horizontal */
+  align-items: center;          /* Centrado vertical */
+  height: 100vh;                /* Ocupa toda la pantalla */
+}
+
+/* Caja blanca del formulario de login */
+.login-box {
+  background: var(--blanco);
+  padding: 40px;
+  border-radius: var(--radius);
+  box-shadow: var(--sombra);
+  width: 90%;                  /* Ocupa 90% del ancho disponible */
+  max-width: 380px;            /* No pasa de 380px */
+  text-align: center;
+}
+
+/* Contenedor del logo y nombre */
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Logo cuadrado con inicial - Mantiene color original */
+.logo {
+  background: #1b263b !important; /* Color original del logo, no cambia (#1b263b) */
+  color: var(--blanco);
+  font-weight: bold;
+  font-size: 28px;
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center; /* Centra contenido horizontal y vertical */
+  border-radius: 10px;
+  box-shadow: var(--sombra);
+}
+
+/* Grupo de etiquetas e inputs */
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+/* Campos de entrada */
+input, select, textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--borde);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  transition: 0.2s;
+}
+
+/* Efecto al enfocar input */
+input:focus, select:focus {
+  border-color: var(--azul-claro);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.2);
+}
+
+/* Alerta de error o mensajes */
+.alert {
+  margin-top: 1rem;
+  color: #b30000;
+  font-weight: 500;
+  display: none; /* Se muestra solo con JS */
+}
+
+/*======================================= FIN LOGIN ===================================*/
+
+/* ==================== HEADER (ENCABEZADO) ==================== */
+/* 
+   Barra superior que aparece en todos los paneles.
+   Contiene el logo, título y botón de cerrar sesión.
+   El color de fondo varía según el panel (estudiante, docente, admin).
+*/
+
+/* Estilos del header: barra superior con logo y título */
+.topbar, header {
+  background: var(--azul);              /* Color de fondo (varía según panel) */
+  color: var(--blanco);                 /* Texto blanco */
+  display: flex;                        /* Flexbox para alinear elementos */
+  justify-content: space-between;       /* Separación entre título y botones */
+  align-items: center;                  /* Centrado vertical */
+  padding: 14px 20px;                   /* Espaciado interno */
+  flex-wrap: wrap;                      /* Permite que se acomoden si hay poco espacio */
+}
+
+/* Título del header */
+.topbar h1, header h1 {
+  font-size: 1.2rem;                    /* Tamaño de fuente */
+}
+
+/*=========================== ESTILO DE LAS TARJETAS DE LOS PANELES ===================*/
+/* -------------------- TARJETAS (CARDS) -------------------- */
+.cards, .grid-cards {
+  display: flex;        /* Flexbox para distribuir las tarjetas */
+  flex-wrap: wrap;      /* Permite que bajen en filas nuevas */
+  justify-content: center;
+  gap: 20px;            /* Espacio entre tarjetas */
+}
+
+/* Cada tarjeta de opciones */
+.card {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-left: 3px solid var(--color-acento); /* Borde izquierdo según panel */
+  border-radius: var(--radius);
+  padding: 25px;           /* Padding aumentado para más espacio */
+  box-shadow: var(--sombra);
+  flex: 1 1 250px;       /* Ancho flexible mínimo de 250px */
+  text-align: center;
+  transition: all 0.3s ease; /* Transición suave para todos los cambios */
+  line-height: 1.6;       /* Interlineado mejorado */
+  display: flex;          /* Flexbox para organizar contenido */
+  flex-direction: column; /* Organiza en columna */
+  justify-content: space-between; /* Distribuye el espacio */
+}
+
+.card h2 {
+  color: var(--color-acento); /* Título en vinotinto */
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+}
+
+.card p {
+  color: var(--gris-texto);
+  margin-bottom: 20px;    /* Espacio antes del botón */
+  flex-grow: 1;           /* Permite que el párrafo crezca */
+  line-height: 1.7;        /* Interlineado mejorado */
+  padding: 8px 0;         /* Padding vertical para mejor espaciado */
+}
+
+.card .btn {
+  margin-top: auto;        /* Empuja el botón hacia abajo */
+  padding: 14px 24px;      /* Padding aumentado para más espacio */
+  background-color: var(--color-acento); /* Fondo según panel */
+  color: var(--blanco);
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px var(--color-rgba-light);
+}
+
+.card .btn:hover {
+  background-color: var(--color-hover); /* Color más oscuro al hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--color-rgba-medium);
+}
+
+.card:hover {
+  transform: translateY(-5px); /* Efecto de "flotar" al pasar el mouse */
+  box-shadow: 0 8px 20px var(--color-rgba-light); /* Sombra con tinte vinotinto más visible */
+  border-color: var(--color-acento); /* Borde según panel al hover */
+  border-left-width: 4px; /* Borde izquierdo más grueso al hover */
+}
+
+/*=========================== FIN TARJETAS DE LOS PANELES ===================*/
+
+/* -------------------- NAVEGACIÓN (TABS) -------------------- */
+.tabs, .nav-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Estilo para el contenedor de navegación con indicador */
+#nav-tabs-indicador {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  background: var(--color-acento);
+  padding: 6px;
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+}
+
+/* Estilo para los indicadores de pestaña dentro del contenedor */
+#nav-tabs-indicador .tab-indicador {
+  flex: 1;
+  text-align: center;
+  background: transparent;
+  color: var(--blanco);
+  border: none;
+  padding: 6px;
+  font-size: 0.9em;
+}
+
+/* Botones de navegación inferior o superior */
+.tab {
+  background: var(--blanco);
+  color: var(--azul);
+  border: 1px solid var(--borde);
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 600;
+}
+.tab.active {
+  background: var(--color-acento);
+  color: var(--blanco);
+  border-color: transparent;
+}
+
+.tab:hover {
+  border-color: var(--color-acento); /* Borde según panel al hover */
+  transition: border-color 0.3s ease;
+}
+
+/* ---------------------------------------------------------------
+   MAPA DE NAVEGACIÓN (tab-indicador)
+   DESCRIPCIÓN:
+     Indicadores visuales de navegación que NO son clickeables.
+     Solo muestran en qué sección se encuentra el usuario.
+     Se usa pointer-events: none para deshabilitar los clics.
+   --------------------------------------------------------------- */
+.tab-indicador {
+  background: var(--blanco);
+  color: var(--azul);
+  border: 1px solid var(--borde);
+  padding: 10px 14px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  pointer-events: none; /* Deshabilita los clics */
+  user-select: none; /* Evita que se seleccione el texto */
+  transition: all 0.3s ease;
+}
+
+.tab-indicador.active {
+  background: var(--color-acento);
+  color: var(--blanco);
+  border-color: transparent;
+  box-shadow: 0 2px 8px var(--color-rgba-medium);
+}
+
+/* -------------------- TABLAS -------------------- */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+thead th {
+  text-align: left;
+  background: var(--blanco);            /* Fondo blanco para encabezados */
+  border-bottom: 3px solid var(--color-acento); /* Borde inferior según panel */
+  padding: 12px;                        /* Padding aumentado */
+  position: sticky;                     /* Fija encabezado al hacer scroll */
+  top: 0;
+  font-weight: 600;                     /* Peso de fuente medio */
+  color: var(--color-acento);               /* Color vinotinto en lugar de azul */
+  box-shadow: 0 2px 4px var(--color-rgba-light); /* Sombra con tinte vinotinto */
+}
+tbody td {
+  padding: 12px;           /* Padding aumentado */
+  border-bottom: 1px solid var(--borde);
+}
+tbody tr:nth-child(even) {
+  background-color: #fafafa; /* Filas alternadas para mejor legibilidad */
+}
+
+tbody tr:hover {
+  background: var(--color-rgba-hover); /* Fondo vinotinto más visible al hover */
+  transition: background 0.2s ease;
+}
+
+tbody tr:nth-child(even):hover {
+  background: var(--color-rgba-hover-strong); /* Hover más visible en filas pares */
+}
+
+/* -------------------- BADGES Y ALERTAS -------------------- */
+.badge {
+  display: inline-block;
+  font-size: .8rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+.badge.ok {
+  background: rgba(16,185,129,.12);
+  color: var(--verde);
+}
+.badge.warn {
+  background: rgba(59,130,246,.12);
+  color: var(--azul-claro);
+}
+
+/* Alerta verde para acciones exitosas */
+.alert.success {
+  display: none;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  margin: 12px 0;
+  font-weight: 600;
+  background: rgba(16,185,129,.12);
+  color: var(--verde);
+  border: 1px solid rgba(16,185,129,.35);
+}
+
+/* -------------------- FORMULARIOS FLEXBOX -------------------- */
+.row {
+  display: flex;        /* Flexbox para agrupar columnas */
+  flex-wrap: wrap;      /* Permite que se ajusten */
+  gap: 12px;
+}
+.col-4 { flex: 1 1 30%; }  /* Ocupa 30% del ancho */
+.col-6 { flex: 1 1 45%; }  /* Ocupa 45% del ancho */
+.col-12 { flex: 1 1 100%; }/* Ocupa 100% del ancho */
+
+/* -------------------- INICIO SECCIONES PANEL ADMINISTRADOR-------------------- */
+
+        /* Oculta las secciones por defecto */
+        .oculto {
+          display: none !important; /* !important para asegurar que se oculte */
+        }
+
+        /* Formato general para las secciones visibles */
+        .seccion {
+          padding: 40px;     /* Aumentado para más espacio entre elementos */
+          text-align: center;
+          animation: aparecer 0.4s ease; /* animación suave al mostrar */
+          margin: 30px 0;    /* Espacio vertical aumentado entre secciones */
+          background-color: var(--blanco); /* Fondo blanco para todas las secciones */
+          border: 1px solid var(--borde); /* Borde suave */
+          border-left: 5px solid var(--color-acento); /* Borde izquierdo según panel */
+          border-radius: var(--radius); /* Bordes redondeados */
+          box-shadow: var(--sombra); /* Sombra ligera */
+          transition: all 0.3s ease; /* Transición suave */
+        }
+        
+        .seccion:hover {
+          box-shadow: 0 8px 20px var(--color-rgba-medium); /* Sombra con tinte según panel al hover */
+          border-left-color: var(--color-hover); /* Color más oscuro al hover */
+        }
+        
+        .seccion h2 {
+          color: var(--color-acento); /* Títulos de sección en vinotinto */
+          border-bottom: 2px solid var(--color-rgba-light); /* Línea inferior vinotinto sutil */
+          padding-bottom: 10px;
+          margin-bottom: 25px;
+        }
+        
+        /* Asegurar que las secciones .view también se oculten con .oculto */
+        .view.oculto {
+          display: none !important;
+        }
+        
+        /* Asegurar que las secciones .view se muestren cuando NO tienen .oculto */
+        .view:not(.oculto) {
+          display: block;
+        }
+
+        /* Animación de entrada */
+        @keyframes aparecer {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ESTA SECCION MODIFICA EL ESTILO DE LA GESTION DE USUARIOS */
+        #usuarios {
+          background-color: var(--blanco); /* Fondo blanco solo en esta sección */
+          border: 1px solid var(--borde);
+          border-left: 5px solid var(--color-acento); /* Borde izquierdo según panel */
+          border-radius: var(--radius);
+          padding: 40px;     /* Más espacio interno */
+          line-height: 1.6;  /* Interlineado mejorado */
+          text-align: left; /* Texto alineado a la izquierda */
+          box-shadow: var(--sombra);
+        }
+        
+        #usuarios h2 {
+          color: var(--color-acento);
+          border-bottom: 2px solid var(--color-rgba-light);
+          padding-bottom: 10px;
+        }
+
+        /* BOTONES DE LA SECCION GESTION DE USUARIO */
+        /* NOTA: Unificado con la paleta de colores azul oscuro, blanco y vinotinto */
+        .user-btn {
+          display: inline-block;          /* Permite aplicar márgenes y centrado */
+          background-color: var(--color-acento); /* Fondo según panel */
+          color: var(--blanco);           /* Texto blanco */
+          font-weight: 600;                /* Letra destacada (600 en lugar de bold) */
+          border: none;                   /* Sin borde */
+          border-radius: var(--radius);    /* Bordes redondeados (12px) */
+          padding: 12px 18px;             /* Espaciado interno (alto y ancho) */
+          cursor: pointer;                /* Cambia el cursor al pasar por encima */
+          transition: all 0.3s ease;     /* Animaciones suaves para todos los cambios */
+          margin: 10px 10px;              /* Espacio entre los botones */
+          text-align: center;             /* Centra el texto dentro del botón */
+          box-shadow: 0 2px 8px var(--color-rgba-medium); /* Sombra con tinte vinotinto */
+        }
+
+        /* TRANSICION DE ESTOS BOTONES */
+        .user-btn:hover {
+          background-color: var(--color-hover); /* Color más oscuro al hover */
+          transform: translateY(-2px);    /* Pequeño movimiento hacia arriba */
+          box-shadow: 0 4px 12px var(--color-rgba-medium); /* Sombra más pronunciada con vinotinto */
+        }
+        
+        /* Botón secundario (blanco con borde) */
+        .user-btn.secondary {
+          background-color: var(--blanco); /* Fondo blanco */
+          color: var(--color-acento);          /* Texto vinotinto */
+          border: 2px solid var(--color-acento); /* Borde según panel */
+        }
+        
+        .user-btn.secondary:hover {
+          background-color: var(--color-rgba-bg); /* Fondo vinotinto muy claro al hover */
+          color: var(--color-hover);          /* Texto más oscuro al hover */
+          border-color: var(--color-hover);   /* Borde más oscuro al hover */
+        }
+
+
+/* -------------------- FIN SECCIONES PANEL ADMINISTRADOR-------------------- */
+
+/* ================================================================
+   ESTILOS PARA LA SECCIÓN DE CURSOS
+   ================================================================ */
+
+/* ---------------------------------------------------------------
+   CONTENEDOR DE BOTONES DE CURSOS (grid-cursos)
+   DESCRIPCIÓN:
+     Contenedor flexible que organiza los botones de cursos
+     en una cuadrícula responsiva usando flexbox.
+   --------------------------------------------------------------- */
+.grid-cursos {
+  display: flex;              /* Activa flexbox para organizar los botones */
+  flex-wrap: wrap;            /* Permite que los botones bajen a nueva línea si no caben */
+  justify-content: center;    /* Centra los botones horizontalmente */
+  gap: 15px;                  /* Espacio entre botones (reutiliza concepto de gap) */
+  margin-top: 20px;           /* Margen superior para separar del botón "Actualizar Mapa" */
+  padding: 20px;              /* Relleno interno del contenedor */
+}
+
+/* ---------------------------------------------------------------
+   BOTONES DE CURSOS (curso-btn)
+   DESCRIPCIÓN:
+     Estiliza los botones que representan cada curso.
+     Usa variables CSS existentes para mantener consistencia
+     con el resto del diseño.
+   --------------------------------------------------------------- */
+.curso-btn {
+  background: var(--blanco);           /* Fondo blanco (variable global) */
+  color: var(--azul);                  /* Texto azul oscuro (variable global) */
+  border: 2px solid var(--azul);       /* Borde azul oscuro (variable global) */
+  border-radius: var(--radius);        /* Bordes redondeados (variable global: 12px) */
+  padding: 15px 25px;                   /* Espaciado interno del botón */
+  font-size: 1rem;                      /* Tamaño de fuente estándar */
+  font-weight: 600;                     /* Negrita media para destacar */
+  cursor: pointer;                      /* Cursor tipo "mano" al pasar el mouse */
+  transition: all 0.3s ease;           /* Transición suave para todos los cambios */
+  box-shadow: var(--sombra);           /* Sombra ligera (variable global) */
+  min-width: 180px;                     /* Ancho mínimo para mantener consistencia */
+  text-align: center;                   /* Centra el texto dentro del botón */
+}
+
+/* ---------------------------------------------------------------
+   ESTADO HOVER DE BOTONES DE CURSOS
+   DESCRIPCIÓN:
+     Efecto visual cuando el usuario pasa el mouse sobre un botón
+     de curso. Cambia el fondo y eleva ligeramente el botón.
+     Usa la paleta unificada: azul oscuro, blanco y vinotinto suave.
+   --------------------------------------------------------------- */
+.curso-btn:hover {
+  background: var(--azul);              /* Fondo azul oscuro (#1b263b) al pasar el mouse */
+  color: var(--blanco);                 /* Texto blanco para contraste */
+  border-color: var(--azul-claro);     /* Borde azul oscuro secundario */
+  transform: translateY(-3px);         /* Eleva el botón 3px hacia arriba */
+  box-shadow: 0 8px 16px rgba(0,0,0,.15); /* Sombra más pronunciada */
+}
+
+/* ---------------------------------------------------------------
+   BOTÓN DE CURSO SELECCIONADO (curso-btn-seleccionado)
+   DESCRIPCIÓN:
+     Estilo aplicado cuando un curso ha sido seleccionado.
+     El botón se agranda y se destaca visualmente del resto.
+   --------------------------------------------------------------- */
+.curso-btn-seleccionado {
+  background: var(--azul);             /* Fondo azul oscuro (#1b263b) */
+  color: var(--blanco);                 /* Texto blanco para contraste */
+  border-color: var(--azul-claro);     /* Borde azul oscuro secundario (#274c77) */
+  transform: scale(1.15);                /* Agranda el botón 15% */
+  font-size: 1.1rem;                    /* Aumenta ligeramente el tamaño de fuente */
+  padding: 20px 30px;                   /* Aumenta el espaciado interno */
+  box-shadow: 0 10px 20px rgba(0,0,0,.2); /* Sombra más pronunciada para efecto de elevación */
+  z-index: 10;                          /* Asegura que esté por encima de otros elementos */
+  position: relative;                   /* Necesario para que z-index funcione */
+}
+
+/* ---------------------------------------------------------------
+   CONTENEDOR DEL MAPA DE ESTUDIANTES (mapa-estudiantes)
+   DESCRIPCIÓN:
+     Contenedor flexible que organiza los botones de estudiantes
+     en una cuadrícula responsiva. Similar a grid-cursos pero
+     optimizado para mostrar más elementos en menos espacio.
+   --------------------------------------------------------------- */
+.mapa-estudiantes {
+  display: flex;              /* Activa flexbox */
+  flex-wrap: wrap;           /* Permite que los botones bajen a nueva línea */
+  justify-content: flex-start; /* Alinea los botones a la izquierda */
+  gap: 10px;                 /* Espacio reducido entre botones (más compacto) */
+  padding: 20px;             /* Relleno interno */
+  background: var(--gris);   /* Fondo gris claro (variable global) */
+  border-radius: var(--radius); /* Bordes redondeados (variable global) */
+  border: 1px solid var(--borde); /* Borde suave (variable global) */
+  min-height: 150px;         /* Altura mínima para mantener espacio visual */
+}
+
+/* ---------------------------------------------------------------
+   BOTONES DE ESTUDIANTES (estudiante-btn)
+   DESCRIPCIÓN:
+     Estiliza los botones que representan cada estudiante en el mapa.
+     Más pequeños y compactos que los botones de cursos, ya que
+     pueden haber muchos estudiantes en un curso.
+   --------------------------------------------------------------- */
+.estudiante-btn {
+  background: var(--blanco);           /* Fondo blanco (variable global) */
+  color: var(--azul-oscuro);           /* Texto azul oscuro (variable global) */
+  border: 1px solid var(--borde);      /* Borde suave (variable global) */
+  border-radius: calc(var(--radius) - 4px); /* Bordes ligeramente menos redondeados (8px) */
+  padding: 10px 16px;                  /* Espaciado interno más compacto */
+  font-size: 0.9rem;                   /* Tamaño de fuente ligeramente menor */
+  font-weight: 500;                    /* Negrita ligera */
+  cursor: pointer;                     /* Cursor tipo "mano" */
+  transition: all 0.2s ease;           /* Transición rápida y suave */
+  box-shadow: 0 2px 4px rgba(0,0,0,.05); /* Sombra muy ligera */
+  min-width: 120px;                    /* Ancho mínimo más pequeño que los botones de cursos */
+  text-align: center;                  /* Centra el texto */
+}
+
+/* ---------------------------------------------------------------
+   ESTADO HOVER DE BOTONES DE ESTUDIANTES
+   DESCRIPCIÓN:
+     Efecto visual cuando el usuario pasa el mouse sobre un botón
+     de estudiante. Más sutil que el de cursos para no distraer.
+   --------------------------------------------------------------- */
+.estudiante-btn:hover {
+  background: var(--azul-claro);       /* Fondo azul claro al pasar el mouse */
+  color: var(--blanco);                 /* Texto blanco para contraste */
+  transform: translateY(-2px);         /* Eleva ligeramente el botón */
+  box-shadow: 0 4px 8px rgba(0,0,0,.1); /* Sombra más pronunciada */
+  border-color: var(--azul-claro);     /* Borde azul claro */
+}
+
+/* ---------------------------------------------------------------
+   MENSAJE CUANDO NO HAY ESTUDIANTES (sin-estudiantes)
+   DESCRIPCIÓN:
+     Estiliza el mensaje que se muestra cuando un curso no tiene
+     estudiantes registrados. Usa colores suaves para no alarmar.
+   --------------------------------------------------------------- */
+.sin-estudiantes {
+  color: var(--gris-texto);            /* Color de texto gris (variable global) */
+  font-style: italic;                  /* Texto en cursiva para diferenciarlo */
+  text-align: center;                   /* Centrado */
+  padding: 40px 20px;                   /* Espaciado generoso */
+  font-size: 1rem;                     /* Tamaño de fuente estándar */
+}
+
+/* -------------------- MEDIA QUERIES RESPONSIVAS -------------------- */
+@media (max-width: 1024px) {
+  .grid-cards { flex-direction: row; }   /* Distribuye tarjetas en fila */
+  .card { flex: 1 1 45%; }               /* Tarjetas más anchas en tablet */
+  
+  /* Responsive para tablas en tablets grandes */
+  .tabla-container {
+    overflow-x: auto;
+  }
+  
+  /* Responsive para navegación */
+  .nav-tabs {
+    gap: 8px;
+  }
+  .tab-indicador {
+    font-size: 0.95rem;
+  }
+  
+  /* Responsive para header */
+  header h1 {
+    font-size: 1.1rem;
+  }
+}
+
+/* ==================== ESTILOS PARA TABLETS (max-width: 768px) ==================== */
+@media (max-width: 768px) {
+  /* Header */
+  .topbar, header {
+    flex-direction: row;      /* Mantiene en fila pero más compacto */
+    gap: 12px;
+    padding: 12px 18px;
+    flex-wrap: wrap;
+  }
+  
+  .header-left {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  header h1 {
+    font-size: 1.15rem;
+  }
+  
+  .logout-btn {
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    min-height: 42px;
+  }
+  
+  /* Navegación */
+  .nav-tabs {
+    gap: 6px;
+    padding: 6px;
+  }
+  
+  .tab-indicador {
+    font-size: 0.9rem;
+    padding: 9px 12px;
+    min-height: 38px;
+  }
+  
+  /* Tarjetas */
+  .cards, .grid-cards {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .card {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 280px;
+    padding: 22px;
+  }
+  
+  /* Formularios */
+  .form-container {
+    padding: 20px 18px;
+  }
+  
+  .form-container label {
+    display: block;
+    margin-bottom: 12px;        /* Espacio amplio antes del select/input */
+    padding-top: 10px;          /* Padding superior para separación */
+    font-size: 0.95rem;
+    font-weight: 600;           /* Negrita para mejor visibilidad */
+    color: var(--texto);        /* Color del texto */
+  }
+  
+  .form-container select,
+  .form-container input {
+    width: 100%;
+    padding: 11px 14px;
+    font-size: 0.95rem;
+    min-height: 42px;
+  }
+  
+  /* Tablas */
+  .tabla-container {
+    overflow-x: auto;
+    padding: 15px 12px;
+  }
+  
+  table {
+    font-size: 0.9rem;
+  }
+  
+  thead th, tbody td {
+    padding: 10px 8px;
+  }
+  
+  /* Container y paneles */
+  .container {
+    padding: 0 15px;
+    margin: 18px auto;
+    gap: 18px;
+  }
+  
+  .panel {
+    padding: 18px 15px;
+  }
+  
+  .panel h2 {
+    font-size: 1.4rem;
+  }
+  
+  /* Botones */
+  .btn {
+    padding: 11px 18px;
+    font-size: 0.95rem;
+    min-height: 42px;
+  }
+  
+  /* Botones de cursos */
+  .curso-btn {
+    min-width: 180px;
+    padding: 13px 22px;
+    font-size: 0.95rem;
+  }
+  
+  .mapa-estudiantes {
+    gap: 8px;
+    padding: 15px;
+  }
+  
+  .estudiante-btn {
+    min-width: 120px;
+    padding: 9px 14px;
+    font-size: 0.9rem;
+  }
+  
+  /* Horario */
+  #tabla-horario-est {
+    font-size: 0.85rem;
+  }
+  
+  #tabla-horario-est th,
+  #tabla-horario-est td {
+    padding: 8px 6px;
+  }
+  
+  /* Inputs generales */
+  .col-4, .col-6 {
+    flex: 1 1 100%;
+  }
+  
+  /* Login */
+  .login-box {
+    padding: 30px 25px;
+  }
+  
+  .tab {
+    font-size: 0.9rem;
+    padding: 9px 12px;
+    min-height: 38px;
+  }
+}
+
+/* ==================== ESTILOS PARA MÓVILES (max-width: 480px) ==================== */
+@media (max-width: 480px) {
+  /* Base */
+  body {
+    font-size: 0.95rem;        /* Texto legible pero compacto */
+    line-height: 1.6;          /* Interlineado mejorado para legibilidad */
+  }
+  
+  /* Container principal */
+  .container {
+    padding: 0 12px;           /* Padding lateral reducido */
+    margin: 12px auto;         /* Margen reducido */
+    gap: 15px;                 /* Espacio entre elementos reducido */
+  }
+  
+  /* Header mejorado para móviles */
+  header, .topbar {
+    padding: 12px 15px;         /* Padding más compacto */
+    flex-direction: column;    /* Apila elementos verticalmente */
+    gap: 12px;
+    text-align: center;
+  }
+  
+  .header-left {
+    flex-direction: row;       /* Logo y título en fila */
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .logo-container-header {
+    padding: 6px;
+    flex-shrink: 0;            /* No se reduce el logo */
+  }
+  
+  .logo-container-header .logo-img {
+    width: 45px;
+    height: 45px;
+  }
+  
+  header h1 {
+    font-size: 1.1rem;         /* Título legible */
+    margin: 0;
+    text-align: center;
+    flex: 1;
+  }
+  
+  .logout-btn {
+    width: 100%;
+    padding: 12px 20px;        /* Botón más grande para fácil toque */
+    font-size: 1rem;
+    margin-top: 0;
+    min-height: 44px;          /* Altura mínima táctil recomendada */
+  }
+  
+  /* Navegación mejorada para móviles */
+  .nav-tabs {
+    flex-direction: row;        /* Mantiene en fila pero más compacto */
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .tab-indicador {
+    flex: 1 1 calc(50% - 3px); /* Dos columnas en móviles */
+    min-width: calc(50% - 3px);
+    font-size: 0.85rem;
+    padding: 10px 8px;         /* Padding cómodo para toque */
+    min-height: 40px;           /* Altura mínima táctil */
+    text-align: center;
+  }
+  
+  /* Tarjetas optimizadas para móviles */
+  .cards, .grid-cards {
+    gap: 15px;
+    padding: 0;
+  }
+  
+  .card {
+    flex: 1 1 100%;
+    padding: 20px 18px;        /* Padding cómodo */
+    margin: 0;
+  }
+  
+  .card h2 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+  
+  .card p {
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+    line-height: 1.6;
+  }
+  
+  .card .btn {
+    padding: 14px 24px;
+    font-size: 1rem;
+    width: 100%;
+    min-height: 44px;          /* Altura táctil */
+  }
+  
+  /* Formularios optimizados */
+  .form-container {
+    padding: 18px 15px;
+    margin-bottom: 15px;
+  }
+  
+  .form-container h3 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+  }
+  
+  .form-container label {
+    display: block;
+    margin-bottom: 12px;        /* Espacio amplio antes del select/input */
+    padding-top: 10px;          /* Padding superior para separación */
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--texto);
+  }
+  
+  .form-container select,
+  .form-container input {
+    width: 100%;
+    padding: 12px 14px;        /* Padding cómodo para toque */
+    font-size: 1rem;           /* Fuente legible */
+    border-radius: 8px;
+    min-height: 44px;          /* Altura táctil */
+    margin-bottom: 15px;
+    box-sizing: border-box;
+  }
+  
+  /* Tablas optimizadas para móviles */
+  .tabla-container {
+    padding: 12px 8px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  table {
+    min-width: 100%;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+  
+  thead th {
+    padding: 10px 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  
+  tbody td {
+    padding: 10px 8px;
+    font-size: 0.9rem;
+    word-wrap: break-word;
+  }
+  
+  /* Tabla de horario específica */
+  #tabla-horario-est {
+    font-size: 0.85rem;
+  }
+  
+  #tabla-horario-est th {
+    padding: 8px 4px;
+    font-size: 0.8rem;
+  }
+  
+  #tabla-horario-est td {
+    padding: 8px 4px;
+    font-size: 0.8rem;
+    word-break: break-word;
+  }
+  
+  /* Tabla de notas */
+  #tabla-notas-est th,
+  #tabla-notas-est td {
+    padding: 10px 6px;
+    font-size: 0.9rem;
+  }
+  
+  /* Paneles */
+  .panel {
+    padding: 15px 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .panel h2 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  
+  .panel h3 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+  
+  .helper {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    color: var(--gris-texto);
+  }
+  
+  /* Botones generales */
+  .btn {
+    padding: 12px 20px;
+    font-size: 1rem;
+    min-height: 44px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .user-btn {
+    padding: 12px 20px;
+    font-size: 1rem;
+    min-height: 44px;
+  }
+  
+  /* Información del profesor */
+  #info-profesor {
+    margin-top: 15px;
+    padding: 15px;
+  }
+  
+  #info-profesor h3 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+  
+  #contenido-profesor {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  #contenido-profesor img {
+    width: 70px;
+    height: 70px;
+  }
+  
+  #contenido-profesor div {
+    width: 100%;
+  }
+  
+  /* Estado aprobado/reprobado */
+  #estado-nota-final {
+    margin-top: 15px;
+  }
+  
+  #estado-nota-final div {
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+  }
+  
+  /* Secciones */
+  .seccion {
+    padding: 15px 12px;
+    margin-bottom: 15px;
+  }
+  
+  .seccion h2 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  
+  /* Botones de cursos y estudiantes */
+  .grid-cursos {
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .curso-btn {
+    min-width: 100%;
+    padding: 14px 20px;
+    font-size: 1rem;
+    min-height: 48px;
+  }
+  
+  .mapa-estudiantes {
+    gap: 8px;
+    padding: 12px;
+  }
+  
+  .estudiante-btn {
+    min-width: calc(50% - 4px);
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    min-height: 40px;
+  }
+  
+  /* Logo en login */
+  .logo {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+  
+  /* Mejoras de accesibilidad táctil */
+  button, .btn, .tab-indicador, select, input[type="submit"], .user-btn {
+    -webkit-tap-highlight-color: var(--color-rgba-light);
+    touch-action: manipulation;
+    cursor: pointer;
+  }
+  
+  /* Mejorar scroll en iOS */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Alerts y mensajes */
+  .alert {
+    padding: 12px 15px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    margin: 12px 0;
+  }
+  
+  /* Mejorar visibilidad de texto */
+  h2, h3 {
+    line-height: 1.4;
+  }
+  
+  /* Espaciado mejorado entre elementos */
+  .seccion, .view {
+    margin-bottom: 20px;
+  }
+  
+  /* Mejorar contraste en tablas */
+  tbody tr:nth-child(even) {
+    background-color: #fafafa;
+  }
+  
+  /* Asegurar que los modales sean responsivos */
+  .modal {
+    width: 95%;
+    max-width: 95%;
+    margin: 10px auto;
+  }
+  
+  .modal-header {
+    padding: 15px 20px;
+    font-size: 1.1rem;
+  }
+  
+  .modal-body {
+    padding: 15px 20px;
+    max-height: calc(100vh - 150px);
+  }
+}
+
+/* Logo del encabezado */
+.logo-img {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+  margin-right: 12px;
+}
+
+/* Contenedor del lado izquierdo del header */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* ---------------------------------------------------------------
+   CONTENEDOR DEL LOGO EN EL HEADER (logo-container-header)
+   DESCRIPCIÓN:
+     Contenedor del logo con fondo blanco para que resalte sobre
+     la barra superior azul. El logo se muestra sobre un fondo
+     blanco redondeado.
+   --------------------------------------------------------------- */
+.logo-container-header {
+  background: #fff;
+  padding: 8px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container-header .logo-img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+/* ================================================================
+   ESTILOS PARA EL PERFIL DE USUARIO
+   ================================================================ */
+
+/* ---------------------------------------------------------------
+   CONTENEDOR PRINCIPAL DEL PERFIL (perfil-container)
+   DESCRIPCIÓN:
+     Contenedor flexible que organiza las secciones del perfil
+     (foto, información personal, cambio de contraseña).
+     Espaciado aumentado para mejor legibilidad.
+   --------------------------------------------------------------- */
+.perfil-container {
+  display: flex;
+  flex-direction: column;
+  gap: 35px; /* Espaciado aumentado entre secciones del perfil */
+  padding: 30px; /* Padding aumentado para más espacio interno */
+  max-width: 900px; /* Ancho máximo aumentado */
+  margin: 0 auto; /* Centrado horizontal */
+}
+
+/* ---------------------------------------------------------------
+   CONTENEDOR DE FOTO DE PERFIL (perfil-foto-container)
+   DESCRIPCIÓN:
+     Contenedor centrado para la foto de perfil con efecto hover.
+   --------------------------------------------------------------- */
+.perfil-foto-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* ---------------------------------------------------------------
+   WRAPPER DE FOTO (foto-wrapper)
+   DESCRIPCIÓN:
+     Contenedor relativo que permite el overlay al hacer hover.
+   --------------------------------------------------------------- */
+.foto-wrapper {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* ---------------------------------------------------------------
+   FOTO DE PERFIL (foto-perfil)
+   DESCRIPCIÓN:
+     Imagen circular de perfil con tamaño aumentado para mejor
+     visibilidad. Tamaño aumentado de 150px a 200px.
+   --------------------------------------------------------------- */
+.foto-perfil {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--azul-claro);
+  box-shadow: var(--sombra);
+  transition: transform 0.3s ease;
+}
+
+.foto-perfil:hover {
+  transform: scale(1.05);
+}
+
+/* ---------------------------------------------------------------
+   OVERLAY DE FOTO (foto-overlay)
+   DESCRIPCIÓN:
+     Overlay que aparece al hacer hover sobre la foto de perfil.
+     Muestra un botón para modificar la foto.
+   --------------------------------------------------------------- */
+.foto-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.foto-wrapper:hover .foto-overlay {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------
+   BOTÓN CAMBIAR FOTO (btn-cambiar-foto)
+   DESCRIPCIÓN:
+     Botón que aparece en el overlay para cambiar la foto de perfil.
+   --------------------------------------------------------------- */
+.btn-cambiar-foto {
+  background: var(--blanco);
+  color: var(--azul);
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
+}
+
+.btn-cambiar-foto:hover {
+  transform: scale(1.1);
+}
+
+/* ---------------------------------------------------------------
+   CONTENEDOR DE INFORMACIÓN DEL PERFIL (perfil-info-container)
+   DESCRIPCIÓN:
+     Contenedor para la información personal del perfil.
+     Espaciado aumentado para mejor legibilidad.
+   --------------------------------------------------------------- */
+.perfil-info-container {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radius);
+  padding: 30px; /* Padding aumentado de 25px a 30px */
+  box-shadow: var(--sombra);
+  margin-bottom: 10px; /* Espacio adicional inferior */
+}
+
+/* ---------------------------------------------------------------
+   HEADER DEL PERFIL (perfil-header)
+   DESCRIPCIÓN:
+     Encabezado de la sección de información personal con título
+     y botón de editar.
+   --------------------------------------------------------------- */
+.perfil-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--borde);
+}
+
+/* ---------------------------------------------------------------
+   CONTENEDOR DE CONTRASEÑA (perfil-password-container)
+   DESCRIPCIÓN:
+     Contenedor para la sección de cambio de contraseña.
+     Espaciado aumentado para mejor legibilidad.
+   --------------------------------------------------------------- */
+.perfil-password-container {
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radius);
+  padding: 30px; /* Padding aumentado de 25px a 30px */
+  box-shadow: var(--sombra);
+  margin-top: 10px; /* Espacio adicional superior */
+}
+
+/* ---------------------------------------------------------------
+   FORMULARIO DEL PERFIL (form-perfil)
+   DESCRIPCIÓN:
+     Estilos para el formulario de perfil.
+     Espaciado aumentado entre campos para mejor legibilidad.
+   --------------------------------------------------------------- */
+.form-perfil {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Espaciado aumentado de 15px a 20px entre campos */
+}
+
+.form-perfil label {
+  font-weight: 600;
+  color: var(--azul);
+  margin-bottom: 5px;
+}
+
+.form-perfil input[readonly],
+.form-perfil select[disabled] {
+  background: var(--gris);
+  cursor: not-allowed;
+}
+
+/* ---------------------------------------------------------------
+   WRAPPER DE INPUT DE CONTRASEÑA (password-input-wrapper)
+   DESCRIPCIÓN:
+     Contenedor flex para el input de contraseña y el botón toggle.
+   --------------------------------------------------------------- */
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input {
+  flex: 1;
+  padding-right: 45px; /* Espacio suficiente para el icono de mostrar/ocultar contraseña */
+}
+
+/* ---------------------------------------------------------------
+   BOTÓN TOGGLE PASSWORD (toggle-password)
+   DESCRIPCIÓN:
+     Botón para mostrar/ocultar la contraseña usando solo iconos.
+     Iconos: ◉ (mostrar) y ◎ (ocultar)
+   --------------------------------------------------------------- */
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;              /* Tamaño de fuente aumentado para iconos */
+  padding: 5px 10px;              /* Padding ajustado para iconos */
+  color: var(--gris-texto);
+  transition: color 0.2s ease, transform 0.2s ease;
+  font-weight: 500;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;                /* Ancho mínimo para iconos */
+  height: 30px;
+  text-indent: 0;                 /* Asegurar que no haya sangría de texto */
+  overflow: hidden;               /* Ocultar cualquier contenido que se desborde */
+}
+
+/* Asegurar que solo se muestren los iconos, no texto */
+.toggle-password::before,
+.toggle-password::after {
+  display: none;                   /* Ocultar pseudo-elementos que puedan agregar texto */
+}
+
+.toggle-password:hover {
+  color: var(--color-acento);     /* Color según panel al hover */
+  transform: translateY(-50%) scale(1.1); /* Efecto de zoom al hover */
+}
+
+.toggle-password:active {
+  transform: translateY(-50%) scale(0.95); /* Efecto de presión al hacer clic */
+}
+
+/* ---------------------------------------------------------------
+   MENSAJES DE ERROR (error-message)
+   DESCRIPCIÓN:
+     Estilos para los mensajes de error en los formularios.
+   --------------------------------------------------------------- */
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 5px;
+  display: none;
+}
+
+/* ---------------------------------------------------------------
+   MODAL (modal)
+   DESCRIPCIÓN:
+     Estilos para el modal de subida de foto de perfil.
+   --------------------------------------------------------------- */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------------------------------------------------------------
+   CONTENIDO DEL MODAL (modal-content)
+   DESCRIPCIÓN:
+     Contenedor del contenido del modal con fondo blanco y bordes
+     redondeados. Incluye scroll interno para modales largos.
+   --------------------------------------------------------------- */
+.modal-content {
+  background: var(--blanco);
+  padding: 0;                           /* Sin padding general, se aplica en header y body */
+  border-radius: var(--radius);
+  box-shadow: var(--sombra);            /* Sombra suave y moderna */
+  max-width: 700px;                     /* Ancho máximo aumentado para modales grandes */
+  width: 90%;
+  max-height: 80vh;                     /* Altura máxima del 80% de la ventana */
+  overflow: hidden;                     /* Sin scroll en el contenedor principal */
+  position: relative;
+  animation: slideDown 0.3s ease;
+  display: flex;                        /* Flexbox para organizar header y body */
+  flex-direction: column;               /* Columna vertical */
+}
+
+/* Encabezado del modal con fondo azul */
+.modal-header {
+  background-color: var(--azul-claro);  /* Fondo azul oscuro secundario */
+  color: var(--fondo);                  /* Texto claro */
+  padding: 20px 30px;                   /* Padding generoso */
+  border-radius: var(--radius) var(--radius) 0 0; /* Bordes redondeados solo arriba */
+  display: flex;                        /* Flexbox para alinear elementos */
+  justify-content: space-between;       /* Separar título y botón cerrar */
+  align-items: center;                  /* Centrar verticalmente */
+}
+
+.modal-header h3 {
+  color: var(--blanco);                 /* Texto blanco en el header */
+  margin: 0;                            /* Sin margen */
+  font-size: 1.25rem;                   /* Tamaño de fuente aumentado */
+  font-weight: 600;                     /* Peso de fuente medio */
+}
+
+/* ---------------------------------------------------------------
+   CUERPO DEL MODAL (modal-body)
+   DESCRIPCIÓN:
+     Contenedor interno del modal para mejor control del scroll.
+     Se usa en modales con mucho contenido como el de horarios.
+     Incluye padding lateral generoso para evitar que el contenido
+     quede pegado a los bordes de la ventana.
+   --------------------------------------------------------------- */
+.modal-body {
+  padding: 25px 30px;                  /* Padding generoso con márgenes laterales */
+  overflow-y: auto;                    /* Scroll vertical cuando el contenido excede */
+  max-height: calc(80vh - 80px);       /* Altura máxima menos el header */
+}
+
+/* ---------------------------------------------------------------
+   FORMULARIO DENTRO DEL MODAL (form-perfil en modales)
+   DESCRIPCIÓN:
+     Estilos específicos para formularios dentro de modales.
+     Asegura que los campos tengan márgenes adecuados y no queden
+     pegados a los bordes.
+   --------------------------------------------------------------- */
+.modal-body .form-perfil {
+  padding: 0; /* Sin padding adicional ya que modal-body ya lo tiene */
+}
+
+.modal-body .form-perfil label {
+  margin-top: 15px; /* Espaciado superior para labels */
+  margin-bottom: 8px; /* Espaciado inferior antes del input */
+}
+
+.modal-body .form-perfil input,
+.modal-body .form-perfil textarea,
+.modal-body .form-perfil select {
+  margin-bottom: 15px; /* Espaciado inferior después de cada campo */
+}
+
+.modal-body .form-perfil button {
+  margin-top: 10px; /* Espaciado superior para botones */
+  margin-right: 10px; /* Espaciado lateral entre botones */
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------------
+   BOTÓN CERRAR MODAL (modal-close)
+   DESCRIPCIÓN:
+     Botón X para cerrar el modal.
+   --------------------------------------------------------------- */
+.modal-close {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--blanco);                 /* Color blanco para contraste con header azul */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  line-height: 1;                       /* Asegurar alineación vertical */
+  padding: 5px;                         /* Padding para área de clic más grande */
+}
+
+.modal-close:hover {
+  color: var(--color-acento);              /* Color vinotinto al hover */
+  transform: scale(1.1);                /* Efecto de agrandar ligeramente */
+}
+
+/* ---------------------------------------------------------------
+   BOTÓN ELIMINAR (eliminar)
+   DESCRIPCIÓN:
+     Estilos para el botón de eliminar (rojo).
+   --------------------------------------------------------------- */
+.user-btn.eliminar {
+  background: #dc3545;
+  color: var(--blanco);
+}
+
+.user-btn.eliminar:hover {
+  background: #c82333;
+  transform: translateY(-2px);
+}
+
+/* ---------------------------------------------------------------
+   LOGOUT BUTTON (logout-btn)
+   DESCRIPCIÓN:
+     Estilos para el botón de cerrar sesión en el header.
+   --------------------------------------------------------------- */
+.logout-btn {
+  background: var(--azul-claro);
+  color: var(--blanco);
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: var(--azul);
+}

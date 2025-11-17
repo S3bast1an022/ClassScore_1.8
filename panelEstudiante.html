@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<!--
+  ================================================================
+  ARCHIVO: panelEstudiante.html
+  DESCRIPCIÓN:
+    Panel principal del estudiante en el sistema ClassScore.
+    Permite al estudiante consultar sus notas, horarios, comunicados
+    y gestionar su perfil personal. Incluye navegación por pestañas
+    y secciones dinámicas que se cargan según la selección del usuario.
+  ================================================================
+-->
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />  <!-- Codificación UTF-8 para caracteres especiales -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <!-- Responsive design -->
+  <title>Bienvenido — Class Score</title>
+  <!-- Estilos CSS del sistema -->
+  <link rel="stylesheet" href="../classScore/classscore.css">
+</head>
+<body class="panel-estudiante">
+  <!-- ===================== ENCABEZADO PRINCIPAL ===================== -->
+  <!-- Barra superior con logo, título y botón de cerrar sesión -->
+  <header role="banner">
+    <div class="header-left">
+      <!-- Contenedor del logo con fondo blanco para destacar sobre el banner -->
+      <div class="logo-container-header">
+        <img src="./imagenes_de_pagina/logo-cs.png" alt="Logo Class Score" class="logo-img">
+      </div>
+      <!-- Título que se actualiza dinámicamente con el nombre del usuario (JavaScript) -->
+      <h1 id="header-titulo">Bienvenido, Usuario</h1>
+    </div>
+
+    <!-- Botón para cerrar sesión y volver al login -->
+    <button class="logout-btn" onclick="cerrarSesion()">Cerrar sesión</button>
+  </header>
+
+
+  <!-- Contenedor principal del panel -->
+  <main class="container" role="main">
+    <!-- ===================== NAVEGACIÓN POR PESTAÑAS ===================== -->
+    <!-- Indicadores visuales de navegación (no clickeables) -->
+    <!-- Muestran en qué sección se encuentra el usuario actualmente -->
+    <div class="nav-tabs" id="nav-tabs-indicador">
+      <div class="tab-indicador" data-seccion="notas">Consulta de Notas</div>
+      <div class="tab-indicador" data-seccion="horario">Horario</div>
+      <div class="tab-indicador" data-seccion="comunicados">Comunicados</div>
+      <div class="tab-indicador" data-seccion="perfil">Mi Perfil</div>
+      <div class="tab-indicador" data-seccion="reporte">Generar Reporte</div>
+    </div>
+
+    <!-- ===================== ACCESOS RÁPIDOS ===================== -->
+    <!-- Tarjetas con acceso rápido a las diferentes secciones del panel -->
+    <div class="grid-cards" aria-label="Accesos rápidos">
+      <!-- Tarjeta: Mis Notas -->
+      <article class="card" tabindex="0">
+        <h3>Mis Notas</h3>
+        <p>Revisa tus notas por curso y evaluación.</p>
+        <div class="card-actions">
+          <button class="btn" onclick="mostrarSeccion('notas')">Ir</button>
+        </div>
+      </article>
+      
+      <!-- Tarjeta: Horario -->
+      <article class="card" tabindex="0">
+        <h3>Horario</h3>
+        <p>Consulta tu horario de clases por día y hora.</p>
+        <div class="card-actions">
+          <button class="btn" onclick="mostrarSeccion('horario')">Ir</button>
+        </div>
+      </article>
+      
+      <!-- Tarjeta: Comunicados -->
+      <article class="card" tabindex="0">
+        <h3>Comunicados</h3>
+        <p>Avisos institucionales y actividades relevantes.</p>
+        <div class="card-actions">
+          <button class="btn" onclick="mostrarSeccion('comunicados')">Ir</button>
+        </div>
+      </article>
+      
+      <!-- Tarjeta: Mi Perfil -->
+      <article class="card" tabindex="0">
+        <h3>Mi Perfil</h3>
+        <p>Actualiza tus datos personales y contacto.</p>
+        <div class="card-actions">
+          <button class="btn" onclick="mostrarSeccion('perfil')">Ir</button>
+        </div>
+      </article>
+      
+      <!-- Tarjeta: Generar Reporte -->
+      <article class="card" tabindex="0">
+        <h3>Generar Reporte</h3>
+        <p>Genera un reporte PDF con tus notas por periodo académico.</p>
+        <div class="card-actions">
+          <button class="btn" onclick="mostrarSeccion('reporte')">Ir</button>
+        </div>
+      </article>
+    </div>
+
+    <!-- ===================== SECCIÓN: CONSULTA DE NOTAS ===================== -->
+    <!-- Sección oculta por defecto, se muestra al hacer clic en "Mis Notas" -->
+    <section id="view-notas" class="view oculto" aria-labelledby="tab-notas">
+      <div class="panel">
+        <h2>Consulta de Notas</h2>
+        <p class="helper">Listado de calificaciones por materia y actividad.</p>
+
+        <!-- Formulario de selección: Materia y Período -->
+        <div class="form-container margin-bottom">
+          <label for="select-materia-notas-est">Seleccione una materia:</label>
+          <select id="select-materia-notas-est" onchange="cargarNotasEstudiante()">
+            <option value="">Seleccione una materia...</option>
+            <!-- Opciones cargadas dinámicamente desde la base de datos -->
+          </select>
+
+          <label for="select-periodo-notas-est">Seleccione un período académico:</label>
+          <select id="select-periodo-notas-est" onchange="cargarNotasEstudiante()">
+            <option value="">Seleccione un período...</option>
+            <!-- Opciones cargadas dinámicamente desde la base de datos -->
+          </select>
+        </div>
+
+        <!-- Contenedor para mensajes de error o información -->
+        <div id="mensaje-notas-est" class="alert" style="display:none;"></div>
+
+        <!-- Tabla que muestra las notas del estudiante -->
+        <div class="tabla-container">
+          <table aria-label="Notas del estudiante" id="tabla-notas-est">
+            <thead>
+              <tr>
+                <th>Nombre de la actividad</th>
+                <th>Nota</th>
+                <th>Porcentaje</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-notas-est">
+              <!-- Filas cargadas dinámicamente desde la base de datos -->
+              <tr>
+                <td colspan="3" style="text-align:center; padding:20px;">Seleccione una materia y un período para ver sus notas</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Estado final: Aprobado o Reprobado (calculado dinámicamente) -->
+        <div id="estado-nota-final" style="display:none;"></div>
+
+        <!-- Información del profesor de la materia seleccionada -->
+        <div id="info-profesor" class="panel margin-top" style="display:none;">
+          <h3>Información del Profesor</h3>
+          <div id="contenido-profesor" style="display:flex; align-items:center; gap:20px; margin-top:15px;">
+            <!-- Información cargada dinámicamente (foto, nombre, correo) -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================== SECCIÓN: HORARIO ===================== -->
+    <!-- Sección oculta por defecto, se muestra al hacer clic en "Horario" -->
+    <section id="view-horario" class="view oculto" aria-labelledby="tab-horario">
+      <div class="panel">
+        <h2>Mi Horario</h2>
+        <p class="helper">Horario de clases por día y hora.</p>
+
+        <!-- Tabla de horario semanal -->
+        <div class="tabla-container">
+          <table id="tabla-horario-est">
+            <thead>
+              <tr>
+                <th>Hora</th>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miércoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-horario-est">
+              <!-- Filas cargadas dinámicamente desde la base de datos -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECCIÓN: COMUNICADOS ===================== -->
+    <!-- Sección oculta por defecto, se muestra al hacer clic en "Comunicados" -->
+    <section id="view-comunicados" class="view oculto" aria-labelledby="tab-comunicados">
+      <div class="panel">
+        <h2>Comunicados</h2>
+        <p class="helper">Avisos importantes de la institución.</p>
+
+        <!-- Tabla de comunicados publicados por administradores y docentes -->
+        <div class="panel no-padding" style="margin-top:8px">
+          <table aria-label="Comunicados" id="tabla-comunicados-est">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Título</th>
+                <th>Contenido</th>
+                <th>Autor</th>
+                <th>Cargo</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-comunicados-est">
+              <!-- Filas cargadas dinámicamente desde la base de datos -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECCIÓN: MI PERFIL ===================== -->
+    <!-- Sección oculta por defecto, se muestra al hacer clic en "Mi Perfil" -->
+    <section id="view-perfil" class="view oculto" aria-labelledby="tab-perfil">
+      <div class="panel">
+        <h2>Mi Perfil</h2>
+        
+        <!-- Contenedor principal del perfil -->
+        <div id="contenedor-perfil-est" class="perfil-container">
+          
+          <!-- Sección de foto de perfil con opción para cambiarla -->
+          <div class="perfil-foto-container">
+            <div class="foto-wrapper">
+              <!-- Imagen de perfil (se actualiza desde la base de datos) -->
+              <img id="foto-perfil-estudiante" src="./imagenes_de_pagina/sin_foto_perfil.jpeg" alt="Foto de perfil" class="foto-perfil">
+              <!-- Overlay que aparece al pasar el mouse sobre la foto -->
+              <div class="foto-overlay">
+                <button type="button" class="btn-cambiar-foto" onclick="abrirModalFotoEstudiante()">Modificar foto de perfil</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sección de información personal del estudiante -->
+          <div class="perfil-info-container">
+            <div class="perfil-header">
+              <h3>Información personal</h3>
+              <!-- Botón para activar/desactivar modo de edición -->
+              <button type="button" class="user-btn" id="btn-editar-perfil-est" onclick="toggleEditarPerfilEstudiante()">Editar</button>
+            </div>
+
+            <!-- Contenedor para mensajes de éxito o error -->
+            <div id="mensaje-perfil-est" class="alert" style="display:none;"></div>
+
+            <!-- Formulario de información personal -->
+            <form id="form-perfil-estudiante" class="form-perfil">
+              <label for="perfil-nombre-est">Nombre completo:</label>
+              <input type="text" id="perfil-nombre-est" name="nombre" readonly>
+
+              <label for="perfil-correo-est">Correo electrónico:</label>
+              <input type="email" id="perfil-correo-est" name="correo" readonly>
+
+              <label for="perfil-telefono-est">Teléfono:</label>
+              <input type="text" id="perfil-telefono-est" name="telefono" placeholder="Ej: +57 311 555 1234" readonly>
+
+              <label for="perfil-tipo-documento-est">Tipo de documento:</label>
+              <select id="perfil-tipo-documento-est" name="tipo_documento" disabled>
+                <option value="">Seleccione...</option>
+                <option value="Cédula">Cédula</option>
+                <option value="Tarjeta de identidad">Tarjeta de identidad</option>
+                <option value="Pasaporte">Pasaporte</option>
+                <option value="NIT">NIT</option>
+                <option value="Cédula de extranjería">Cédula de extranjería</option>
+              </select>
+
+              <label for="perfil-numero-documento-est">Número de documento:</label>
+              <input type="text" id="perfil-numero-documento-est" name="numero_documento" pattern="[0-9]+" placeholder="Solo números" readonly>
+
+              <!-- Botón para guardar cambios (visible solo en modo edición) -->
+              <button type="button" class="user-btn" id="btn-actualizar-perfil-est" onclick="actualizarPerfilEstudiante()" style="display:none; margin-top:15px;">Actualizar perfil</button>
+            </form>
+          </div>
+
+          <!-- Sección de cambio de contraseña -->
+          <div class="perfil-password-container">
+            <h3>Actualizar contraseña</h3>
+            <!-- Contenedor para mensajes de éxito o error -->
+            <div id="mensaje-password-est" class="alert" style="display:none;"></div>
+
+            <!-- Formulario de cambio de contraseña -->
+            <form id="form-password-estudiante" class="form-perfil">
+              <label for="password-actual-est">Contraseña actual:</label>
+              <div class="password-input-wrapper">
+                <input type="password" id="password-actual-est" name="password_actual" placeholder="Ingrese su contraseña actual">
+                <!-- Botón para mostrar/ocultar contraseña -->
+                <button type="button" class="toggle-password" onclick="togglePasswordEstudiante('password-actual-est')" aria-label="Mostrar contraseña">◉</button>
+              </div>
+
+              <label for="password-nueva-est">Nueva contraseña:</label>
+              <div class="password-input-wrapper">
+                <input type="password" id="password-nueva-est" name="password_nueva" placeholder="Mínimo 6 caracteres" minlength="6">
+                <!-- Botón para mostrar/ocultar contraseña -->
+                <button type="button" class="toggle-password" onclick="togglePasswordEstudiante('password-nueva-est')" aria-label="Mostrar contraseña">◉</button>
+              </div>
+
+              <label for="password-confirmar-est">Confirmar nueva contraseña:</label>
+              <div class="password-input-wrapper">
+                <input type="password" id="password-confirmar-est" name="password_confirmar" placeholder="Confirme la nueva contraseña" minlength="6">
+                <!-- Botón para mostrar/ocultar contraseña -->
+                <button type="button" class="toggle-password" onclick="togglePasswordEstudiante('password-confirmar-est')" aria-label="Mostrar contraseña">◉</button>
+              </div>
+
+              <!-- Botón para actualizar la contraseña -->
+              <button type="button" class="user-btn" onclick="actualizarPasswordEstudiante()" style="margin-top:15px;">Actualizar contraseña</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== SECCIÓN: GENERAR REPORTE ===================== -->
+    <!-- Sección oculta por defecto, se muestra al hacer clic en "Generar Reporte" -->
+    <section id="view-reporte" class="view oculto" aria-labelledby="tab-reporte">
+      <div class="panel">
+        <h2>Generar Reporte de Notas</h2>
+        <p class="helper">Genera un reporte PDF con todas tus materias y notas definitivas por periodo académico.</p>
+
+        <!-- Formulario para seleccionar periodo académico -->
+        <div class="form-container margin-bottom">
+          <label for="select-periodo-reporte">Seleccione un período académico:</label>
+          <select id="select-periodo-reporte">
+            <option value="">Seleccione un período...</option>
+            <!-- Opciones cargadas dinámicamente desde la base de datos -->
+          </select>
+        </div>
+
+        <!-- Contenedor para mensajes de error o información -->
+        <div id="mensaje-reporte-est" class="alert" style="display:none;"></div>
+
+        <!-- Botón para generar el reporte PDF -->
+        <div style="margin-top: 20px;">
+          <button type="button" class="user-btn" onclick="generarReportePDF()" id="btn-generar-reporte">
+            Generar Reporte PDF
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== MODAL: SUBIR FOTO DE PERFIL ===================== -->
+    <!-- Modal oculto por defecto, se muestra al hacer clic en "Modificar foto de perfil" -->
+    <div id="modal-foto-estudiante" class="modal oculto">
+      <div class="modal-content">
+        <!-- Botón para cerrar el modal -->
+        <span class="modal-close" onclick="cerrarModalFotoEstudiante()">&times;</span>
+        <h3>Cambiar foto de perfil</h3>
+        <!-- Formulario para subir imagen (enctype necesario para archivos) -->
+        <form id="form-foto-estudiante" enctype="multipart/form-data">
+          <input type="file" id="input-foto-estudiante" name="foto" accept="image/jpeg,image/jpg,image/png" required>
+          <!-- Vista previa de la imagen seleccionada -->
+          <div id="preview-foto-estudiante" class="preview-foto">
+            <img id="img-preview-estudiante" src="" alt="Vista previa" class="img-preview" style="display:none;">
+          </div>
+          <!-- Botones de acción del modal -->
+          <button type="button" class="user-btn" onclick="subirFotoPerfilEstudiante()">Subir foto</button>
+          <button type="button" class="user-btn secondary" onclick="cerrarModalFotoEstudiante()">Cancelar</button>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Script JavaScript que controla la funcionalidad del panel del estudiante -->
+  <script src="estudiante.js"></script>
+</body>
+</html>
